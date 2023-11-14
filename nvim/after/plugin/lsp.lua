@@ -37,19 +37,21 @@ require('mason-lspconfig').setup({
     ensure_installed = {},
     handlers = { default_setup },
 })
-
 local cmp = require('cmp')
-
 cmp.setup({
     sources = {
         { name = 'nvim_lsp' },
+        { name = 'luasnip'  },
+        { name = 'buffer'   },
     },
     mapping = cmp.mapping.preset.insert({
         -- Enter key confirms completion item
-        ['<Tab>'] = cmp.mapping.confirm({ select = false }),
-
-        -- Ctrl + space triggers completion menu
-        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+        ['<M-j>'] = cmp.mapping.select_next_item(),
+        ['<M-k>'] = cmp.mapping.select_prev_item(),
+        ['<M-l>'] = cmp.mapping.scroll_docs(4),
+        ['<M-h>'] = cmp.mapping.scroll_docs(-4),
+        ['<CR>'] = cmp.mapping.abort(),
     }),
     snippet = {
         expand = function(args)
@@ -57,21 +59,17 @@ cmp.setup({
         end,
     },
 })
-require('lspconfig').lua_ls.setup({
+lspconfig.pyright.setup({
+    -- Other setup options...
     settings = {
-        Lua = {
-            runtime = {
-                version = 'LuaJIT'
+        python = {
+            analysis = {
+                typeCheckingMode = "basic",  -- Adjust type checking mode if needed
             },
-            diagnostics = {
-                globals = { 'vim' },
-            },
-            workspace = {
-                library = {
-                    vim.env.VIMRUNTIME,
-                }
-            }
-        }
-    }
+            useLibraryCodeForTypes = true,  -- Use library code for types
+        },
+        pyright = {
+            usePyrightrc = false,  -- Disable pyrightrc file if you want to use the global settings
+        },
+    },
 })
-require('lspconfig').rust_analyzer.setup({})

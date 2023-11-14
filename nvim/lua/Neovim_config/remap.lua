@@ -1,9 +1,13 @@
+local vim = vim
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
 vim.api.nvim_set_keymap('n', '<Space>', '<Nop>', { noremap = true, silent = true })
-vim.keymap.set("i", "<Alt-leader>", '<Esc>:w<CR>')
-vim.keymap.set("v", "<Alt-leader>", '<Esc>')
-vim.keymap.set({ "i", "v", "n" }, "<Alt-u>", vim.cmd.undo)
+vim.keymap.set("i", "<M- >", '<Esc>')
+vim.keymap.set("v", "<M- >", '<Esc>')
+vim.keymap.set("i", "<M-h>", '<home>')
+vim.keymap.set("i", "<M-l>", '<End>')
+vim.keymap.set({ "i", "v", "n" }, "<M-u>", vim.cmd.undo)
+vim.keymap.set({ "i", "v", "n" }, "<M-r>", vim.cmd.redo)
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "J", "mzJ`z")
@@ -20,7 +24,7 @@ end)
 -- greatest remap ever
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
--- next greatest remap ever : asbjornHaland
+-- next greatest remap ever : 
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 
