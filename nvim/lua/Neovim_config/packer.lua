@@ -1,5 +1,4 @@
--- This file can be loaded by calling `lua require('plugins')` from your init.vim
-
+#-- This file can be loaded by calling `lua require('plugins')` from your init.vim
 -- Only required if you have Packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
 
@@ -24,6 +23,7 @@ return require('packer').startup(function(use)
     use { 'theprimeagen/harpoon' }
     use { 'mbbill/undotree' }
     use { 'tpope/vim-fugitive' }
+    use { 'christoomey/vim-tmux-navigator' }
     use {
         "windwp/nvim-autopairs",
         config = function() require("nvim-autopairs").setup {} end
