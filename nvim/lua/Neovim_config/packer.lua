@@ -2,8 +2,7 @@
 -- Only required if you have Packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
 
-return require('packer').startup(function(use)
-    -- Packer can manage itself
+return require('packer').startup(function(use) -- Packer can manage itself
     use 'wbthomason/packer.nvim'
     use {
         'nvim-telescope/telescope.nvim',
@@ -24,6 +23,13 @@ return require('packer').startup(function(use)
     use { 'mbbill/undotree' }
     use { 'tpope/vim-fugitive' }
     use { 'christoomey/vim-tmux-navigator' }
+    -- vim api
+    use { 'folke/neodev.nvim' }
+    --lua Docs
+    use { 'nanotee/luv-vimdocs'}
+    use { 'milisims/nvim-luaref'}
+    -- Personal
+    -- use '/home/Arch/code/neovim_plugins/Explorer.nvim'
     use {
         "windwp/nvim-autopairs",
         config = function() require("nvim-autopairs").setup {} end

@@ -5,7 +5,9 @@ lsp_defaults.capabilities = vim.tbl_deep_extend(
     lsp_defaults.capabilities,
     require('cmp_nvim_lsp').default_capabilities()
 )
-
+require("neodev").setup({
+  -- add any options here, or leave empty to use the default settings
+})
 vim.api.nvim_create_autocmd('LspAttach', {
     desc = 'LSP actions',
     callback = function(event)
@@ -13,6 +15,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
         vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
+        vim.keymap.set('n', 'gT', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
         vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
         vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
         vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
@@ -22,9 +25,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set({ 'n', 'x' }, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
         vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
 
-        --vim.keymap.set('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>', opts)
-        --vim.keymap.set('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>', opts)
-        --vim.keymap.set('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>', opts)
+        vim.keymap.set('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>', opts)
+        vim.keymap.set('n', 'gn', '<cmd>lua vim.diagnostic.goto_prev()<cr>', opts)
+        vim.keymap.set('n', 'gp', '<cmd>lua vim.diagnostic.goto_next()<cr>', opts)
     end
 })
 
@@ -46,12 +49,11 @@ cmp.setup({
     },
     mapping = cmp.mapping.preset.insert({
         -- Enter key confirms completion item
-        ['<Tab>'] = cmp.mapping.confirm({ select = true }),
-        ['<M-j>'] = cmp.mapping.select_next_item(),
-        ['<M-k>'] = cmp.mapping.select_prev_item(),
-        ['<M-l>'] = cmp.mapping.scroll_docs(4),
-        ['<M-h>'] = cmp.mapping.scroll_docs(-4),
-        ['<CR>'] = cmp.mapping.abort(),
+        ['<Tab>'] = cmp.mapping.confirm({select=true}),
+        ['<CR>'] = cmp.mapping.select_next_item({select=true}),
+        --['<Tab-l>'] = cmp.mapping.scroll_docs(4),
+        --['<Tab-h>'] = cmp.mapping.scroll_docs(-4),
+        --['<CR>'] = cmp.mapping.abort(),
     }),
     snippet = {
         expand = function(args)
@@ -59,17 +61,26 @@ cmp.setup({
         end,
     },
 })
+
+lspconfig.lua_ls.setup {
+     settings = {
+      Lua = {
+            completion = {
+                callSnippet = "Replace"
+      },
+    },
+   }
+}
+
+-- Additional configuration can be added based on your preferences
+
 lspconfig.pyright.setup({
-    -- Other setup options...
     settings = {
         python = {
             analysis = {
                 typeCheckingMode = "basic",  -- Adjust type checking mode if needed
             },
             useLibraryCodeForTypes = true,  -- Use library code for types
-        },
-        pyright = {
-            usePyrightrc = false,  -- Disable pyrightrc file if you want to use the global settings
         },
     },
 })
