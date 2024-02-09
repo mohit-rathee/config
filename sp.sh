@@ -54,8 +54,8 @@ SP_MEMB="org.mpris.MediaPlayer2.Player"
 
 # To get SP_ID and SP_SECRET register at
 # https://beta.developer.spotify.com/documentation/general/guides/app-settings/
-SP_ID="7a4ffec37d0849629dc0667f6e0941f1"
-SP_SECRET="21c341ef5beb46f1ac24874afdb8a5d8"
+SP_ID=""
+SP_SECRET=""
 
 # SHELL OPTIONS
 
