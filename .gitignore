@@ -1,1 +1,37 @@
 awesome/awesome-wm-widgets
+git
+BraveSoftware
+Code - OSS
+ alacritty
+★ awesome
+balena-etcher
+btop
+config
+dconf
+discord
+google-chrome
+gtk-2.0
+gtk-3.0
+htop
+light
+lutris
+menus
+mpv
+neofetch
+nitrogen
+✗ nvim
+packer
+procps
+pulse
+qBittorrent
+ranger
+spotify
+systemd
+vlc
+yay
+.gitignore
+★ QtProject.conf
+kconf_updaterc
+kdeglobals
+mimeapps.list
+pavucontrol.ini

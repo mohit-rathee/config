@@ -1,4 +1,3 @@
-local vim = vim
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
@@ -12,8 +11,6 @@ vim.o.splitright =true
 
 vim.opt.smartindent = true
 
---vim.opt.wrap = false
-
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
@@ -26,5 +23,3 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 --vim.opt.colorcolumn = "100"
-
-vim.g.mapleader = " "

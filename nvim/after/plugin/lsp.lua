@@ -6,7 +6,7 @@ lsp_defaults.capabilities = vim.tbl_deep_extend(
     require('cmp_nvim_lsp').default_capabilities()
 )
 require("neodev").setup({
-  -- add any options here, or leave empty to use the default settings
+    -- add any options here, or leave empty to use the default settings
 })
 vim.api.nvim_create_autocmd('LspAttach', {
     desc = 'LSP actions',
@@ -15,19 +15,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
         vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-        vim.keymap.set('n', 'gT', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
-        vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
+        --vim.keymap.set('n', 'gT', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
+        --vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
         vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
         vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
         vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
         vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
         vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-        vim.keymap.set({ 'n', 'x' }, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
+        vim.keymap.set('n', '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
         vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
-
         vim.keymap.set('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>', opts)
-        vim.keymap.set('n', 'gn', '<cmd>lua vim.diagnostic.goto_prev()<cr>', opts)
-        vim.keymap.set('n', 'gp', '<cmd>lua vim.diagnostic.goto_next()<cr>', opts)
+        vim.keymap.set('n', 'gp', '<cmd>lua vim.diagnostic.goto_prev()<cr>', opts)
+        vim.keymap.set('n', 'gn', '<cmd>lua vim.diagnostic.goto_next()<cr>', opts)
     end
 })
 
@@ -37,22 +36,21 @@ end
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-    ensure_installed = {},
     handlers = { default_setup },
 })
 local cmp = require('cmp')
 cmp.setup({
     sources = {
         { name = 'nvim_lsp' },
-        { name = 'luasnip'  },
-        { name = 'buffer'   },
+        { name = 'luasnip' },
+        { name = 'buffer' },
     },
     mapping = cmp.mapping.preset.insert({
         -- Enter key confirms completion item
-        ['<Tab>'] = cmp.mapping.confirm({select=true}),
-        ['<CR>'] = cmp.mapping.select_next_item({select=true}),
-        --['<Tab-l>'] = cmp.mapping.scroll_docs(4),
-        --['<Tab-h>'] = cmp.mapping.scroll_docs(-4),
+        ['<Tab>'] = cmp.mapping.select_next_item({ select = true }),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        ['<C-l>'] = cmp.mapping.scroll_docs(4),
+        ['<C-h>'] = cmp.mapping.scroll_docs(-4),
         --['<CR>'] = cmp.mapping.abort(),
     }),
     snippet = {
@@ -63,24 +61,32 @@ cmp.setup({
 })
 
 lspconfig.lua_ls.setup {
-     settings = {
-      Lua = {
-            completion = {
-                callSnippet = "Replace"
-      },
-    },
-   }
+    settings = {
+        Lua = {
+            diagnostics = {
+                globals = { 'awesome', 'client' }
+            },
+        },
+    }
 }
-
--- Additional configuration can be added based on your preferences
 
 lspconfig.pyright.setup({
     settings = {
         python = {
             analysis = {
-                typeCheckingMode = "basic",  -- Adjust type checking mode if needed
+                typeCheckingMode = "basic", -- Adjust type checking mode if needed
             },
             useLibraryCodeForTypes = true,  -- Use library code for types
         },
     },
 })
+
+require'lspconfig'.rust_analyzer.setup{
+  settings = {
+    ['rust-analyzer'] = {
+      diagnostics = {
+        enable = true;
+      }
+    }
+  }
+}
