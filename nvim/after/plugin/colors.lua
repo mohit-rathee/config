@@ -9,6 +9,10 @@ function ColorNeovim(color)
     vim.api.nvim_set_hl(0, "VertSplit", { bg = 'none' })
     vim.api.nvim_set_hl(0, "StatusLine", { bg = 'none' })
 
+    vim.api.nvim_set_hl(0, "TabLine", { bg = 'none' })
+    vim.api.nvim_set_hl(0, "TabLineFill", { bg = 'none' })
+
+
     -- Set transparency for the inactive pane
     vim.api.nvim_set_hl(0, "NormalNC", { bg = 'none' })
     --vim.api.nvim_set_hl(0, "StatusLineNC", { bg = 'none' })

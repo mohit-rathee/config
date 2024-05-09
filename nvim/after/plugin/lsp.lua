@@ -15,8 +15,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
         vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-        --vim.keymap.set('n', 'gT', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
-        --vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
+        vim.keymap.set('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
+        vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
         vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
         vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
         vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
@@ -48,10 +48,10 @@ cmp.setup({
     mapping = cmp.mapping.preset.insert({
         -- Enter key confirms completion item
         ['<Tab>'] = cmp.mapping.select_next_item({ select = true }),
+        ['<C-k>'] = cmp.mapping.select_prev_item({ select = true }),
         ['<CR>'] = cmp.mapping.confirm({ select = true }),
         ['<C-l>'] = cmp.mapping.scroll_docs(4),
         ['<C-h>'] = cmp.mapping.scroll_docs(-4),
-        --['<CR>'] = cmp.mapping.abort(),
     }),
     snippet = {
         expand = function(args)
@@ -81,7 +81,7 @@ lspconfig.pyright.setup({
     },
 })
 
-require'lspconfig'.rust_analyzer.setup{
+lspconfig.rust_analyzer.setup{
   settings = {
     ['rust-analyzer'] = {
       diagnostics = {
@@ -89,4 +89,26 @@ require'lspconfig'.rust_analyzer.setup{
       }
     }
   }
+}
+
+lspconfig.html.setup{
+    filetypes = {"htmldjango","html"},
+    settings = {
+        ['html'] = {
+            diagnostics = {
+                enable = true;
+            }
+        }
+    }
+}
+
+lspconfig.eslint.setup{
+    filetypes = {"htmldjango","html"},
+    settings = {
+        ['eslint'] = {
+            diagnostics = {
+                enable = true;
+            }
+        }
+    }
 }
