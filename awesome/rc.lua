@@ -121,7 +121,7 @@ beautiful.menu_width = 150
 local myapps = {
     { "Firefox",   function() awful.util.spawn("firefox") end },
     { "Chrome",    function() awful.util.spawn("google-chrome-stable") end },
-    { "Tekken",    function() awful.util.spawn("wine /home/Arch/Games/Tekken_3.exe") end },
+    { "Tekken",    function() awful.util.spawn("wine /home/Arch/games/Tekken_3.exe") end },
     { "lutris",    function() awful.util.spawn("lutris") end },
     { "VLC",       function() awful.util.spawn("vlc") end },
     { "wallpaper", function() awful.util.spawn("nitrogen") end },
@@ -136,7 +136,7 @@ local mymainmenu = awful.menu({
 })
 
 local mylauncher = awful.widget.launcher({
-    image = "/home/Arch/Downloads/message.png",
+    image = "/home/Arch/Downloads/images/message.png",
     menu = mymainmenu
 })
 
@@ -235,7 +235,7 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Each screen has its own tag table.
     local tags = {
-        names = { "A", "W", "E", "S", "O", "M", "E", "😎" },
+        names = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "😎" },
 --        layout = { awful.layout.layouts[1], awful.layout.layouts[1], awful.layout.layouts[1],
 --            awful.layout.layouts[1], awful.layout.layouts[1], awful.layout.layouts[1],
 --            awful.layout.layouts[1], awful.layout.layouts[1], awful.layout.layouts[1] }
@@ -322,7 +322,7 @@ awful.screen.connect_for_each_screen(function(s)
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            mylauncher,
+            --mylauncher,
             s.mytaglist,
             s.mypromptbox,
         },
@@ -346,10 +346,6 @@ awful.screen.connect_for_each_screen(function(s)
                 step = 10
             },
             space_widget,
-            wifi_widget({
-                mode='wifi'
-            }),
-            space_widget,
             batteryarc_widget({
                 show_current_level = true,
             }),
@@ -357,6 +353,10 @@ awful.screen.connect_for_each_screen(function(s)
             volume_widget({
                 widget_type = 'arc',
                 card = 0
+            }),
+            space_widget,
+            wifi_widget({
+                mode='wifi'
             }),
             space_widget,
             mytextclock,
@@ -374,7 +374,7 @@ root.buttons(gears.table.join(
 -- }}}
 awful.screen.focused().mywibox.visible = true
 -- {{{ Key bindings
-globalkeys = gears.table.join(
+local globalkeys = gears.table.join(
 
     awful.key({ modkey, }, "a", hotkeys_popup.show_help,
         { description = "show help", group = "awesome" }),
@@ -382,6 +382,14 @@ globalkeys = gears.table.join(
         { description = "show help", group = "music" }),
     awful.key({ modkey, }, "d", function() spotify_shell.launch() end, { description = "spotify shell", group = "music" }),
     awful.key({ modkey }, "0", function()
+        local screen = awful.screen.focused()
+        local tag = screen.tags[10]
+        if tag then
+            tag:view_only()
+        end
+        end,
+        { description = "take a screenshot", group = "screenshot" }),
+    awful.key({ modkey, "Shift" }, "0", function()
             awful.util.spawn("scrot /home/Arch/screenshots/%d-%m-%Y--%H-%M-%S.png")
             naughty.notify({ text = "Taking a screenshot" })
         end,
@@ -676,15 +684,12 @@ awful.rules.rules = {
         },
         properties = { floating = true }
     },
-
-    -- Add titlebars to normal clients and dialogs
     {
-        rule_any = { type = { "normal", "dialog" } },
-        properties = { titlebars_enabled = false }
+        rule = { class = "Spotify" },
+        properties = { screen = 1, tag = "😎"},
     },
 }
 -- }}}
-
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function(c)
@@ -766,4 +771,4 @@ beautiful.useless_gap = 3
 --awful.spawn.with_shell("nm-applet")
 --awful.spawn.with_shell("blueman-applet")
 awful.spawn.with_shell("picom")
---awful.spawn.with1_shell("/home/Arch/.screenlayout/dual_screen.sh")
+awful.spawn.with_shell("/home/Arch/.screenlayout/dual_screen.sh")
