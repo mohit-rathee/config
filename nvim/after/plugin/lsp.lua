@@ -47,7 +47,7 @@ cmp.setup({
     },
     mapping = cmp.mapping.preset.insert({
         -- Enter key confirms completion item
-        ['<Tab>'] = cmp.mapping.select_next_item({ select = true }),
+        ['<C-j>'] = cmp.mapping.select_next_item({ select = true }),
         ['<C-k>'] = cmp.mapping.select_prev_item({ select = true }),
         ['<CR>'] = cmp.mapping.confirm({ select = true }),
         ['<C-l>'] = cmp.mapping.scroll_docs(4),
@@ -70,44 +70,40 @@ lspconfig.lua_ls.setup {
     }
 }
 
-lspconfig.pyright.setup({
+lspconfig.pylsp.setup({
+    filetypes = { "htmldjango"},
     settings = {
-        python = {
-            analysis = {
-                typeCheckingMode = "basic", -- Adjust type checking mode if needed
+        pylsp = {
+            plugins = {
+                pylint = { enabled = false },
+                pycodestyle = { enabled = false },
+                pyflakes = {
+                    enabled = true,
+                    ignore = {
+                        'W',  -- Suppress all warnings
+                    },
+                },
             },
-            useLibraryCodeForTypes = true,  -- Use library code for types
-        },
-    },
+        }
+    }
 })
 
-lspconfig.rust_analyzer.setup{
-  settings = {
-    ['rust-analyzer'] = {
-      diagnostics = {
-        enable = true;
-      }
-    }
-  }
-}
-
-lspconfig.html.setup{
-    filetypes = {"htmldjango","html"},
+lspconfig.rust_analyzer.setup {
     settings = {
-        ['html'] = {
+        ['rust-analyzer'] = {
             diagnostics = {
-                enable = true;
+                enable = true,
             }
         }
     }
 }
 
-lspconfig.eslint.setup{
-    filetypes = {"htmldjango","html"},
+lspconfig.html.setup {
+    filetypes = { "htmldjango", "html" },
     settings = {
-        ['eslint'] = {
+        ['html'] = {
             diagnostics = {
-                enable = true;
+                enable = true,
             }
         }
     }

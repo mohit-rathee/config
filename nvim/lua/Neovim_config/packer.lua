@@ -5,12 +5,19 @@ return require('packer').startup(function(use)
     -- very important plugins.
     use {
         'nvim-telescope/telescope.nvim',
-        tag = '0.1.4',     -- or , branch = '0.1.x',
+        tag = '0.1.4', -- or , branch = '0.1.x',
         requires = { 'nvim-lua/plenary.nvim' }
     }
     use { 'nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' } }
     use { 'nvim-treesitter/playground' } -- to inspect treesitter
 
+    use {
+        'numToStr/Comment.nvim',
+        config = function()
+            require('Comment').setup()
+        end
+    }
+    use { 'JoosepAlviste/nvim-ts-context-commentstring' }
     -- good plugins
     use { 'rose-pine/neovim', as = 'rose-pine',
         config = function()
@@ -21,6 +28,9 @@ return require('packer').startup(function(use)
     use { 'tpope/vim-fugitive' }
     use { 'christoomey/vim-tmux-navigator' }
     use { 'windwp/nvim-autopairs' }
+
+    -- Github Copilot
+    -- use {'github/copilot.vim'}
 
     -- LSP saga
     use {
@@ -49,7 +59,6 @@ return require('packer').startup(function(use)
     use 'simrat39/rust-tools.nvim'
     use 'nvim-telescope/telescope-dap.nvim'
 
-    -- helpful in future
     use { 'kyazdani42/nvim-tree.lua' }
     use { 'kyazdani42/nvim-web-devicons' }
     -- for vim plugins development
