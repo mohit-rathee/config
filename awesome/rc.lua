@@ -63,11 +63,24 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+local function get_device ()
+    local handle = io.popen("pactl list short sinks | awk 'NR==2 {print $1}'")
+    local device
+    if handle then
+        device = handle:read("*l")  -- Read a line from the handle
+        if not device then
+           device = '0'
+        end
+        device = device:match("^%s*(.-)%s*$")
+        handle:close()
+    end
+    return device
+end
 
 -- This is used later as the default terminal and editor to run.
-terminal = "alacritty"
-editor = os.getenv("EDITOR") or "nvim"
-editor_cmd = terminal .. " -e " .. editor
+local terminal = "alacritty"
+local editor = os.getenv("EDITOR") or "nvim"
+local editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -125,7 +138,7 @@ local myapps = {
     { "lutris",    function() awful.util.spawn("lutris") end },
     { "VLC",       function() awful.util.spawn("vlc") end },
     { "wallpaper", function() awful.util.spawn("nitrogen") end },
-    { "Spotify",   function() awful.util.spawn("spotify-launcher") end }
+    { "Spotify",   function() awful.util.spawn("spotify-launcher --skip-update") end }
 }
 -- To add awesome icon add ", beautiful.awesome_icon" after myawesomemenu or myapps
 local mymainmenu = awful.menu({
@@ -145,11 +158,11 @@ local mylauncher = awful.widget.launcher({
 --}}}
 
 -- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
+-- local mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+local mytextclock = wibox.widget.textclock()
 local cw = calendar_widget({
     theme = 'nord',
     placement = 'top_right',
@@ -236,9 +249,9 @@ awful.screen.connect_for_each_screen(function(s)
     -- Each screen has its own tag table.
     local tags = {
         names = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "😎" },
---        layout = { awful.layout.layouts[1], awful.layout.layouts[1], awful.layout.layouts[1],
---            awful.layout.layouts[1], awful.layout.layouts[1], awful.layout.layouts[1],
---            awful.layout.layouts[1], awful.layout.layouts[1], awful.layout.layouts[1] }
+        --        layout = { awful.layout.layouts[1], awful.layout.layouts[1], awful.layout.layouts[1],
+        --            awful.layout.layouts[1], awful.layout.layouts[1], awful.layout.layouts[1],
+        --            awful.layout.layouts[1], awful.layout.layouts[1], awful.layout.layouts[1] }
     }
 
     -- Add tags to each screen
@@ -292,7 +305,7 @@ awful.screen.connect_for_each_screen(function(s)
                     {
                         id = 'text_role',
                         widget = wibox.widget.textbox,
-                        max_width = 50, -- Adjust this width as needed
+                        max_width = 50,       -- Adjust this width as needed
                         ellipsize = "middle", -- Truncate text in the middle if it exceeds width
                     },
                     layout = wibox.layout.fixed.horizontal,
@@ -327,7 +340,7 @@ awful.screen.connect_for_each_screen(function(s)
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
-        { -- Right widgets
+        {             -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             spotify_widget({
                 play_icon = '/home/Arch/wallpapers/spotify_green.svg',
@@ -356,7 +369,7 @@ awful.screen.connect_for_each_screen(function(s)
             }),
             space_widget,
             wifi_widget({
-                mode='wifi'
+                mode = 'wifi'
             }),
             space_widget,
             mytextclock,
@@ -378,15 +391,15 @@ local globalkeys = gears.table.join(
 
     awful.key({ modkey, }, "a", hotkeys_popup.show_help,
         { description = "show help", group = "awesome" }),
-    awful.key({ "Mod4", }, "s", function() awful.util.spawn("spotify-launcher") end,
+    awful.key({ "Mod4", }, "s", function() awful.util.spawn("spotify-launcher --skip-update") end,
         { description = "show help", group = "music" }),
     awful.key({ modkey, }, "d", function() spotify_shell.launch() end, { description = "spotify shell", group = "music" }),
     awful.key({ modkey }, "0", function()
-        local screen = awful.screen.focused()
-        local tag = screen.tags[10]
-        if tag then
-            tag:view_only()
-        end
+            local screen = awful.screen.focused()
+            local tag = screen.tags[10]
+            if tag then
+                tag:view_only()
+            end
         end,
         { description = "take a screenshot", group = "screenshot" }),
     awful.key({ modkey, "Shift" }, "0", function()
@@ -454,8 +467,8 @@ local globalkeys = gears.table.join(
         { description = "swap with next client by index", group = "client" }),
     awful.key({ modkey, "Shift" }, "k", function() awful.client.swap.byidx(-1) end,
         { description = "swap with previous client by index", group = "client" }),
-    awful.key({ modkey, }, "o", function () awful.screen.focus_relative( 1) end,
-            {description = "focus the next screen", group = "screen"}),
+    awful.key({ modkey, }, "o", function() awful.screen.focus_relative(1) end,
+        { description = "focus the next screen", group = "screen" }),
     --awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
     --        {description = "focus the previous screen", group = "screen"}),
     --awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
@@ -481,9 +494,24 @@ local globalkeys = gears.table.join(
         { description = "Increse volume", group = "Volume" }),
     awful.key({ modkey, }, "]", function() awful.spawn.with_shell("pactl -- set-sink-volume 0 -5%") end,
         { description = "Decrease volume", group = "Volume" }),
+    awful.key({modkey, "Shift"}, "[", function()
+        local device = get_device()
+        awful.spawn.with_shell(string.format("pactl -- set-sink-volume %s +5%%", device))
+    end,
+        { description = "Increse volume", group = "Volume" }),
+    awful.key({modkey, "Shift"}, "]", function()
+        local device = get_device()
+        awful.spawn.with_shell(string.format("pactl -- set-sink-volume %s -5%%", device))
+    end,
+        { description = "Decrease volume", group = "Volume" }),
+    awful.key({}, "XF86AudioMuteVolume", function()
+        local device = get_device()
+        awful.spawn.with_shell(string.format("pactl set-sink-mute %s toggle", device))
+    end,
+        { description = "Decrease volume", group = "Volume" }),
     awful.key({ modkey, }, "g", function() awful.util.spawn("google-chrome-stable") end,
         { description = "web browser", group = "applications" }),
-    awful.key({ modkey,"Control" }, "c", function() awful.util.spawn("firefox -kiosk -url https://chat.openai.com") end,
+    awful.key({ modkey, "Control" }, "c", function() awful.util.spawn("firefox -kiosk -url https://chat.openai.com") end,
         { description = "Chatgpt in firefox", group = "applications" }),
 
     --awful.key({ modkey, "Control"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
@@ -655,7 +683,7 @@ awful.rules.rules = {
     {
         rule_any = {
             instance = {
-                "DTA", -- Firefox addon DownThemAll.
+                "DTA",   -- Firefox addon DownThemAll.
                 "copyq", -- Includes session name in class.
                 "pinentry",
             },
@@ -664,7 +692,7 @@ awful.rules.rules = {
                 "Blueman-manager",
                 "Gpick",
                 "Kruler",
-                "MessageWin", -- kalarm.
+                "MessageWin",  -- kalarm.
                 "Sxiv",
                 "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
                 "Wpa_gui",
@@ -677,16 +705,16 @@ awful.rules.rules = {
                 "Event Tester", -- xev.
             },
             role = {
-                "AlarmWindow", -- Thunderbird's calendar.
+                "AlarmWindow",   -- Thunderbird's calendar.
                 "ConfigManager", -- Thunderbird's about:config.
-                "pop-up",  -- e.g. Google Chrome's (detached) Developer Tools.
+                "pop-up",        -- e.g. Google Chrome's (detached) Developer Tools.
             }
         },
         properties = { floating = true }
     },
     {
         rule = { class = "Spotify" },
-        properties = { screen = 1, tag = "😎"},
+        properties = { screen = 1, tag = "😎" },
     },
 }
 -- }}}
@@ -729,20 +757,20 @@ client.connect_signal("request::titlebars", function(c)
 
     myTitlebar:setup {
 
-        {  -- Left
+        { -- Left
             --awful.titlebar.widget.iconwidget(c),
             --buttons = buttons,
             layout = wibox.layout.fixed.horizontal
         },
-        {      -- Middle
-            {  -- Title
+        {     -- Middle
+            { -- Title
                 align  = "center",
                 widget = awful.titlebar.widget.titlewidget(c)
             },
             buttons = buttons,
             layout  = wibox.layout.flex.horizontal
         },
-        {  -- Right
+        { -- Right
             --awful.titlebar.widget.floatingbutton (c),
             --awful.titlebar.widget.maximizedbutton(c),
             --awful.titlebar.widget.stickybutton   (c),
