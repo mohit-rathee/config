@@ -71,7 +71,7 @@ lspconfig.lua_ls.setup {
 }
 
 lspconfig.pylsp.setup({
-    filetypes = { "htmldjango"},
+    filetypes = { "htmldjango" },
     settings = {
         pylsp = {
             plugins = {
@@ -80,7 +80,7 @@ lspconfig.pylsp.setup({
                 pyflakes = {
                     enabled = true,
                     ignore = {
-                        'W',  -- Suppress all warnings
+                        'W', -- Suppress all warnings
                     },
                 },
             },

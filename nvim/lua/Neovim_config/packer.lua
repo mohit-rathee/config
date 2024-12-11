@@ -19,6 +19,8 @@ return require('packer').startup(function(use)
     }
     use { 'JoosepAlviste/nvim-ts-context-commentstring' }
     -- good plugins
+    use { "catppuccin/nvim", as = "catppuccin" }
+    use {"rebelot/kanagawa.nvim", as = "kanagawa"}
     use { 'rose-pine/neovim', as = 'rose-pine',
         config = function()
             vim.cmd('colorscheme rose-pine')
