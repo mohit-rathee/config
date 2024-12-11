@@ -403,12 +403,12 @@ local globalkeys = gears.table.join(
         end,
         { description = "take a screenshot", group = "screenshot" }),
     awful.key({ modkey, "Shift" }, "0", function()
-            awful.util.spawn("scrot /home/Arch/screenshots/%d-%m-%Y--%H-%M-%S.png")
+            awful.util.spawn("scrot /home/Arch/screenshots/%Y-%m-%d--%H-%M-%S.png")
             naughty.notify({ text = "Taking a screenshot" })
         end,
         { description = "take a screenshot", group = "screenshot" }),
     awful.key({ modkey, "Control" }, "0", function()
-            awful.util.spawn("scrot -s -d 1 /home/Arch/screenshots/%d-%m-%Y--%H-%M-%S.png")
+            awful.util.spawn("scrot -s -d 1 /home/Arch/screenshots/%Y-%m-%d--%H-%M-%S.png")
             naughty.notify({ text = "Saving snippet" })
         end,
         { description = "take a screenshot", group = "screenshot" }),
