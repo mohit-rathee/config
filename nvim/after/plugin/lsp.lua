@@ -1,10 +1,27 @@
 local lspconfig = require('lspconfig')
 local lsp_defaults = lspconfig.util.default_config
+
+local float_opts = {
+    border = "rounded", -- Apply rounded borders globally to all LSP floating windows
+}
+
+vim.diagnostic.config({
+    float = float_opts,
+})
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+    vim.lsp.handlers.hover, float_opts
+)
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+    vim.lsp.handlers.signature_help, float_opts
+)
+
 lsp_defaults.capabilities = vim.tbl_deep_extend(
     'force',
     lsp_defaults.capabilities,
     require('cmp_nvim_lsp').default_capabilities()
 )
+
 require("neodev").setup({
     -- add any options here, or leave empty to use the default settings
 })
@@ -38,33 +55,20 @@ require('mason').setup({})
 require('mason-lspconfig').setup({
     handlers = { default_setup },
 })
-local cmp = require('cmp')
-cmp.setup({
-    sources = {
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-        { name = 'buffer' },
-    },
-    mapping = cmp.mapping.preset.insert({
-        -- Enter key confirms completion item
-        ['<C-j>'] = cmp.mapping.select_next_item({ select = true }),
-        ['<C-k>'] = cmp.mapping.select_prev_item({ select = true }),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
-        ['<C-l>'] = cmp.mapping.scroll_docs(4),
-        ['<C-h>'] = cmp.mapping.scroll_docs(-4),
-    }),
-    snippet = {
-        expand = function(args)
-            require('luasnip').lsp_expand(args.body)
-        end,
-    },
-})
 
 lspconfig.lua_ls.setup {
     settings = {
         Lua = {
+            workspace = {
+                library = {
+                    [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                    [vim.fn.stdpath("config") .. "/lua"] = true,
+                    ["/usr/share/awesome/lib"] = true,
+                },
+                checkThirdParty = false,
+            },
             diagnostics = {
-                globals = { 'awesome', 'client' }
+                globals = { "awesome", "client", "root", "screen" },
             },
         },
     }

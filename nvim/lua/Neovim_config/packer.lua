@@ -20,7 +20,7 @@ return require('packer').startup(function(use)
     use { 'JoosepAlviste/nvim-ts-context-commentstring' }
     -- good plugins
     use { "catppuccin/nvim", as = "catppuccin" }
-    use {"rebelot/kanagawa.nvim", as = "kanagawa"}
+    use { "rebelot/kanagawa.nvim", as = "kanagawa" }
     use { 'rose-pine/neovim', as = 'rose-pine',
         config = function()
             vim.cmd('colorscheme rose-pine')
@@ -50,8 +50,9 @@ return require('packer').startup(function(use)
             { 'saadparwaiz1/cmp_luasnip' },
             { 'hrsh7th/cmp-nvim-lsp' },
             -- snippets
-            { 'L3MON4D3/LuaSnip' },
-            { 'rafamadriz/friendly-snippets' },
+            { "L3MON4D3/LuaSnip",
+                dependencies = { "rafamadriz/friendly-snippets" },
+            }
         }
     }
 
