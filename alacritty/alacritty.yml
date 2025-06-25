@@ -57,7 +57,7 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
-  decorations: full
+  decorations: none
 
   # Startup Mode (changes require restart)
   #
@@ -68,7 +68,7 @@ window:
   #
   # Values for `startup_mode` (macOS only):
   #   - SimpleFullscreen
-  startup_mode: Windowed
+  startup_mode: Maximized
 
   # Window title
   title: Alacritty
@@ -105,7 +105,7 @@ scrolling:
 # Some applications, like Emacs, rely on knowing about the width of a tab.
 # To prevent unexpected behavior in these applications, it's also required to
 # change the `it` value in terminfo when altering this setting.
-tabspaces: 4
+# tabspaces: 4
 
 # Font configuration
 font:
@@ -221,7 +221,6 @@ font:
   #
   # This is a global setting and will require a log out or restart to take
   # effect.
-  AppleFontSmoothing: true
 
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
@@ -654,7 +653,7 @@ selection:
   save_to_clipboard: true
 
 # Allow terminal applications to change Alacritty's window title.
-dynamic_title: true
+# dynamic_title: true
 
   #cursor:
   # Cursor style
