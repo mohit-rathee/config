@@ -55,6 +55,11 @@ return require('packer').startup(function(use)
             }
         }
     }
+    --null-ls
+    use({
+      "nvimtools/none-ls.nvim",
+      requires = { "nvim-lua/plenary.nvim" }
+    })
 
     -- debugging
     use 'mfussenegger/nvim-dap'

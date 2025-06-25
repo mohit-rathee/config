@@ -51,6 +51,7 @@ local default_setup = function(server)
     lspconfig[server].setup({})
 end
 
+
 require('mason').setup({})
 require('mason-lspconfig').setup({
     handlers = { default_setup },
@@ -112,3 +113,18 @@ lspconfig.html.setup {
         }
     }
 }
+
+lspconfig.ts_ls.setup({
+    root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", ".git"),
+})
+
+local null_ls = require("null-ls")
+
+-- null_ls.setup({
+--   sources = {
+--     null_ls.builtins.formatting.prettier,
+--     -- null_ls.builtins.diagnostics.eslint_d,
+--     -- null_ls.builtins.code_actions.eslint_d
+--   }
+-- })
+
