@@ -29,6 +29,8 @@ local space_widget = wibox.widget {
     layout = wibox.layout.fixed.horizontal,
 }
 local space_widget1 = wibox.container.background(space_widget, "#FF0000")
+-- local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
+-- local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 require("awful.hotkeys_popup.keys")
 
 -- {{{ Error handling
@@ -249,27 +251,24 @@ awful.screen.connect_for_each_screen(function(s)
     -- Each screen has its own tag table.
     local tags = {
         names = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "😎" },
-        --        layout = { awful.layout.layouts[1], awful.layout.layouts[1], awful.layout.layouts[1],
-        --            awful.layout.layouts[1], awful.layout.layouts[1], awful.layout.layouts[1],
-        --            awful.layout.layouts[1], awful.layout.layouts[1], awful.layout.layouts[1] }
     }
 
     -- Add tags to each screen
     -- Each screen has its own tag table.
     awful.tag(tags.names, s, awful.layout.layouts[1])
 
-    s.systray = wibox.widget.systray()
-    s.systray.visible = false
+    -- s.systray = wibox.widget.systray()
+    -- s.systray.visible = false
     -- Create a promptbox for each screen
-    s.mypromptbox = awful.widget.prompt()
+    -- s.mypromptbox = awful.widget.prompt()
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
-    s.mylayoutbox = awful.widget.layoutbox(s)
-    s.mylayoutbox:buttons(gears.table.join(
-        awful.button({}, 1, function() awful.layout.inc(1) end),
-        awful.button({}, 3, function() awful.layout.inc(-1) end),
-        awful.button({}, 4, function() awful.layout.inc(1) end),
-        awful.button({}, 5, function() awful.layout.inc(-1) end)))
+    -- s.mylayoutbox = awful.widget.layoutbox(s)
+    -- s.mylayoutbox:buttons(gears.table.join(
+    --     awful.button({}, 1, function() awful.layout.inc(1) end),
+    --     awful.button({}, 3, function() awful.layout.inc(-1) end),
+    --     awful.button({}, 4, function() awful.layout.inc(1) end),
+    --     awful.button({}, 5, function() awful.layout.inc(-1) end)))
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist {
         screen  = s,
@@ -350,8 +349,23 @@ awful.screen.connect_for_each_screen(function(s)
                 max_length = -1,
                 show_tooltip = true,
             }),
+            -- cpu_widget({
+            --     width = 50,
+            --     step_width = 2,
+            --     step_spacing = 0,
+            --     color = '#434c5e'
+            -- }),
+            -- ram_widget({
+            --     color_used=beautiful.bg_urgent,
+            --     color_free =beautiful.fg_normal,
+            --     color_buf='orange',
+            --     widget_height=25,
+            --     widget_width=25,
+            --     widget_show_buf= true,
+            -- }),
             space_widget,
             wibox.widget.systray(),
+            space_widget,
             brightness_widget {
                 type = 'arc',
                 program = 'light',
@@ -359,19 +373,19 @@ awful.screen.connect_for_each_screen(function(s)
                 step = 10
             },
             space_widget,
-            batteryarc_widget({
-                show_current_level = true,
-            }),
-            space_widget,
+            -- batteryarc_widget({
+            --     show_current_level = true,
+            -- }),
+            -- space_widget,
             volume_widget({
                 widget_type = 'arc',
                 card = 0
             }),
             space_widget,
-            wifi_widget({
-                mode = 'wifi'
-            }),
-            space_widget,
+            -- wifi_widget({
+            --     mode = 'wifi'
+            -- }),
+            -- space_widget,
             mytextclock,
         }
     }
@@ -797,6 +811,6 @@ beautiful.useless_gap = 3
 --awful.spawn.with_shell("kdeconnectd")
 --awful.spawn.with_shell("volctl")
 --awful.spawn.with_shell("nm-applet")
---awful.spawn.with_shell("blueman-applet")
+-- awful.spawn.with_shell("blueman-applet")
 awful.spawn.with_shell("picom")
 awful.spawn.with_shell("/home/Arch/.screenlayout/dual_screen.sh")
